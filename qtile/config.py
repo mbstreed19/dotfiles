@@ -144,9 +144,23 @@ keys = [
         lazy.spawn("emacsclient -c -a 'emacs'"),
         desc="launch emacs"
         ),
+    Key([], "b",
+        lazy.spawn("emacsclient -c -a 'emacs' --eval '(ibuffer)'"),
+        desc='Emacsclient Ibuffer'
+        ),
+    Key([], "d",
+        lazy.spawn("emacsclient -c -a 'emacs' --eval '(dired nil)'"),
+        desc='Emacsclient Dired'
+        ),
+    Key([], "s",
+        lazy.spawn("emacsclient -c -a 'emacs' --eval '(eshell)'"),
+        desc='Emacsclient Eshell'
+        ),
+        Key([], "v",
+        lazy.spawn("emacsclient -c -a 'emacs' --eval '(+vterm/here nil)'"),
+        desc='Emacsclient Vterm'
+        ),
         ]),
-
-
     ### Switch focus to specific monitor (out of three)
          Key([mod], "e",
              lazy.to_screen(0),
@@ -171,12 +185,12 @@ keys = [
              ),
 ]
 
-groups = [Group("WEB", layout='monadtall'), #screen_affinity = 2),
+groups = [Group("WEB", layout='monadtall', screen_affinity = 2),
           Group("TUBE", layout='monadtall', screen_affinity = 2),
           Group("REF", layout='monadtall', screen_affinity = 2),
           Group("EMACS", layout='monadtall', screen_affinity = 0),
-          Group("VIM", layout='monadtall', screen_affinity = 0),
-          Group("GAME", layout='monadtall', screen_affinity = 0),
+          Group("DOCS", layout='monadtall', screen_affinity = 0),
+          Group("EMAIL", layout='monadtall', screen_affinity = 0),
           Group("SPT", layout='monadtall', screen_affinity = 1),
           Group("DISC", layout='monadtall', screen_affinity = 1),
           Group("TERM", layout='monadtall', screen_affinity = 1),]
@@ -324,6 +338,11 @@ wl_input_rules = None
 def startup():
     home = os.path.expanduser('~')
     subprocess.call([home + '/.config/qtile/autostart.sh'])
+
+@hook.subscribe.startup_once
+def startup_once():
+    home = os.path.expanduser('~')
+    subprocess.call([home + '/.screenlayout/screenlayout.sh'])
 
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
